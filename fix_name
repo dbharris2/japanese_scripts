@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+# Downloading an mp4 from Crunchyroll can have extra characters
+# in the file name. This script will remove those extra characters.
+# E.g. My Hero Academia Episode 1 – Izuku Midoriya - Origin-730707.mp4
+
+Dir.glob(ARGV[0] + "/*.mp4").sort.each do |file_name|
+  name = File.basename(file_name, ".*")
+  updated_name = name[0...-7]
+  updated_file_name = File.dirname(file_name) + "/" + updated_name + ".mp4"
+  File.rename(file_name, updated_file_name)
+end

@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+# Opens a jisho.org for a given Japanese word
+
+word = ARGV[0]
+system("open", "https://jisho.org/search/#{word}")

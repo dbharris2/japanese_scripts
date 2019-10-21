@@ -1,0 +1,6 @@
+#!/usr/bin/env ruby
+
+# Opens a webpage with information about a given Kanji
+
+kanji = ARGV[0]
+system("open", "https://hochanh.github.io/rtk/#{kanji}/index.html")

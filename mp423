@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+
+# Create an mp3 from an mp4
+
+def escaped_str(str)
+  s = str.gsub(/ /, '\ ')
+  s = s.gsub("&", "\\\\&")
+  return s.gsub("'", "\\\\'")
+end
+
+Dir.glob(ARGV[0] + "/*.mp4").sort.each do |f|
+  path = escaped_str(File.dirname(f) + "/" + File.basename(f, ".*"))
+  command = "ffmpeg -f mp3 -vn #{path}.mp3 -i #{path}.mp4\n"
+  system(command)
+end

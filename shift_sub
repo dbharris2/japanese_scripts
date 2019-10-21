@@ -1,0 +1,31 @@
+#!/usr/bin/env ruby
+
+# Shifts all of the times in a subtitle file by a given amount
+# Note: You can't use subtitle files with negative times. 
+
+def escaped_str(str)
+  s = str.gsub(/ /, '\ ')
+  return s.gsub("'", "\\\\'")
+end
+
+def append_string_to_file_name(file_name, string_to_append)
+  new_file_name = File.dirname(file_name) + "/" + File.basename(file_name, ".*") + string_to_append + File.extname(file_name)
+  File.rename(file_name, new_file_name)
+  return new_file_name
+end
+
+def shift_subtitle(file_name, offset)
+  updated_file_name = append_string_to_file_name(file_name, "_ORIGINAL_")
+  command = "ffmpeg -itsoffset #{offset} -i #{escaped_str(updated_file_name)} -c copy #{escaped_str(file_name)}"
+  system(command)
+end
+
+def shift_subtitles(folder_path, offset)
+  Dir.glob(folder_path + "/*.{ass,srt}").sort.each do |file_name|
+    shift_subtitle(file_name, offset)
+  end
+end
+
+folder_path = ARGV[0]
+offset = ARGV[1]
+shift_subtitles(folder_path, offset)
